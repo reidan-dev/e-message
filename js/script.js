@@ -9,24 +9,20 @@ if (!idParam){
 }
 
 const eMessageApiUrl = "https://reidan-dev.vercel.app/api/google_sheets/eMessage/" + idParam
-// const eMessageApiUrl = "http://127.0.0.1:5000/api/google_sheets/eMessage/" + idParam
-
-fetch(eMessageApiUrl)
-.then(response => {
-    if (!response.ok) {
-        throw new Error('Network response was not ok: ' + response.statusText);
+const fetchData = async () => {
+    try {
+        const response = await fetch(eMessageApiUrl); // Replace with your API URL
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        const data = await response.json(); // Parse JSON response
+        console.log(data); // Handle the data from the response
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error); // Handle errors
     }
-    return response.json(); // Parse JSON data from the response
-})
-.then(data => {
-    console.log(data); // Log the data to the console
-    // document.getElementById('output').innerHTML = JSON.stringify(data, null, 2);
-})
-.catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-    // document.getElementById('output').innerHTML = 'Error: ' + error.message;
-});
+};
 
+fetchData(); // Call the async function
 
 // Spotify Embedded
 let isPlayed = false;
