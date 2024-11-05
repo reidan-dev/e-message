@@ -3,9 +3,10 @@ const url = new URL(currentUrl);
 const params = new URLSearchParams(url.search);
 const idParam = params.get('id');
 
+
+const container = document.querySelector(".container")
 if (!idParam){
-    const container = document.querySelector(".container")
-    container.classList.add("hidden")
+    container.classList.remove("hidden")
 }
 
 const eMessageApiUrl = "https://reidan-dev.vercel.app/api/google_sheets/eMessage/" + idParam
@@ -16,7 +17,11 @@ const fetchData = async () => {
             throw new Error('Network response was not ok ' + response.statusText);
         }
         const data = await response.json(); // Parse JSON response
-        console.log(data); // Handle the data from the response
+
+        if (!("ERROR" in data)){
+            container.classList.remove("hidden")
+        }
+
 
         // CHANGE VALUES HERE
         nickName = data["nick_name"]
@@ -29,10 +34,8 @@ const fetchData = async () => {
         sender = data["sender"]
         closingRemarks = data["closing_remarks"]
         uri = data["uri"]
-
+        
         let adjustedColors = adjustColor(colorEnvelope)
-        console.log(adjustedColors.lighter)
-        console.log(colorEnvelope)
         document.documentElement.style.setProperty('--envelope-base', colorEnvelope);
         document.documentElement.style.setProperty('--letter', colorLetter);
         document.documentElement.style.setProperty('--background', colorBG);
@@ -41,7 +44,7 @@ const fetchData = async () => {
         document.documentElement.style.setProperty('--envelope-mid', adjustedColors.darker);
         document.documentElement.style.setProperty('--envelope-shadow', adjustedColors.muchDarker);
         
-        document.title = document.title.replace("%NAME%", nickName)
+        document.title = `e-Message for ${nickName}`
 
         let message_front_element = document.querySelector(".message-front")
         let message_main_element = document.querySelector(".message-main")
@@ -55,7 +58,7 @@ const fetchData = async () => {
             const spotifyOptions = {
                 width: '75%',
                 height: '100',
-                uri: 'https://open.spotify.com/playlist/' + uri,
+                uri: 'https://open.spotify.com/playlist/' + uri ,
             };
 
             const setupSpotifyPlayer = (EmbedController) => {
