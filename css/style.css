@@ -1,0 +1,145 @@
+:root {
+    /* Constant */
+    --drop-shadow: #00000038;
+    
+    /* From Input */
+    --envelope-base: #5e5690;
+    --letter: #e5dcd7;
+    --background: white;
+    --letter-font: rgb(75, 41, 58);
+
+    /* Derived */
+    --envelope-highlight: #7873a7;
+    --envelope-mid: #555184;
+    --envelope-shadow: #4f4c6b;
+}
+
+body {
+    overflow: hidden;
+    background-color:var(--background);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 85vh;
+}
+
+#player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+
+.content {
+    position: relative;
+    perspective: 600px;
+}
+
+.shadow {
+    position: absolute;
+    width: 200px;
+    height: 1px;
+    background: transparent;
+    border-radius: 30%;
+    box-shadow: 50px 100px 10px 5px var(--drop-shadow);
+}
+
+/* Letter styling */
+.letter {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 280px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--letter);
+    border-radius: 2px;
+    box-shadow: 0px 1px 7px -2px var(--envelope-base);
+    z-index: 15;
+}
+
+.letter .body {
+    position: relative;
+    width: 240px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--letter-font);
+}
+
+.letter .body .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 30px;
+    cursor: pointer;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    user-select: none;
+}
+
+.letter .body .message {
+    font-size: 7px;
+    font-weight: 200;
+    text-align: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Envelope styling */
+.envelope {
+    position: relative;
+    width: 300px;
+    height: 180px;
+    background: linear-gradient(var(--envelope-base) 0.5px, var(--envelope-highlight) 0.5px);
+    cursor: pointer;
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    border-top: 115px solid var(--envelope-highlight);
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    box-sizing: border-box;
+    transform-origin: top;
+    z-index: 30;
+}
+
+.envelope::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 300px;
+    height: 180px;
+    background:
+        linear-gradient(30deg, var(--envelope-mid) 47%, var(--envelope-shadow) 50%, var(--envelope-base) 50%) 150px 90px / 150px 90px no-repeat,
+        linear-gradient(31deg, var(--envelope-base) 49%, var(--envelope-shadow) 50%, transparent 50%) 0px 0px / 152px 90px no-repeat,
+        linear-gradient(150deg, var(--envelope-base) 50%, var(--envelope-shadow) 50%, var(--envelope-mid) 53%) 0px 90px / 151px 90px no-repeat,
+        linear-gradient(148.7deg, transparent 50%, var(--envelope-shadow) 50%, var(--envelope-base) 51%) 150px 0px / 150px 90px no-repeat;
+    z-index: 25;
+}
+
+/* Utility classes */
+.hidden {
+    opacity: 0 !important;
+}
+
+/* Responsive design */
+@media only screen and (max-width: 600px) {
+    body {
+        scale: 0.75;
+    }
+}

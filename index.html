@@ -1,22 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My HTML Project</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>For Jelo</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/CSSRulePlugin.min.js"></script>
 </head>
+
 <body>
-    <header>
-        <h1>Welcome to My HTML Project</h1>
-    </header>
-    <main>
-        <img src="images/logo.png" alt="Logo">
-        <p>This is a simple HTML project structure.</p>
-    </main>
-    <footer>
-        <p>&copy; 2024 My HTML Project</p>
-    </footer>
-    <script src="js/script.js"></script>
+    <div class="container">
+        <div class="content">
+            <div id="envelope" class="envelope" onclick="openCard()">
+                <div class="envelope-flap"></div>
+            </div>
+
+            <!-- Letter 1 -->
+            <div class="letter" id="letter-1">
+                <span class="close" onclick="event.stopPropagation(); openLetter2()">
+                    <div class="body">
+                        <div class="message">
+                            My Beloved <b>Jelo</b>,<br />
+                            This song is for you.<br />
+                            Warm wishes,<br />
+                            <b>Dan</b>
+                        </div>
+                    </div>
+                </span>
+            </div>
+
+            <!-- Letter 2 -->
+            <div class="letter" id="letter-2">
+                <span class="close" onclick="event.stopPropagation(); closeCard()">
+                    <div class="body">
+                        <div class="message">
+                            My Beloved <b>Jelo</b>,<br /><br />
+                            As this year comes to a close, I want to take a moment to express how proud I am of your incredible resilience. You have faced challenges with strength and grace, and it has been inspiring to witness your journey. Your determination and ability to rise above adversity are truly remarkable.<br />
+                            As we look forward to 2025, I hope it brings you even more opportunities for growth, happiness, and success. May this new year be filled with joy, prosperity, and all the beautiful moments you deserve. Keep shining bright!<br /><br />
+                            Yours always,<br />
+                            <b>Dan</b>
+                        </div>
+                    </div>
+                </span>
+            </div>
+
+            <div class="shadow"></div>
+        </div>
+    </div>
+
+    <div id="player" class="hidden">
+        <div id="embed-iframe"></div>
+        <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+        <script src="js/script.js"></script>
+    </div>
 </body>
+
 </html>
