@@ -6,7 +6,7 @@
     --envelope-base: #5e5690;
     --letter: #e5dcd7;
     --background: white;
-    --letter-font: rgb(75, 41, 58);
+    --letter-font: #4b293a;
 
     /* Derived */
     --envelope-highlight: #7873a7;
@@ -65,7 +65,7 @@ body {
     justify-content: center;
     background: var(--letter);
     border-radius: 2px;
-    box-shadow: 0px 1px 7px -2px var(--envelope-base);
+    box-shadow: 0px 1px 7px -2px var(--envelope-highlight);
     z-index: 15;
 }
 
@@ -101,7 +101,7 @@ body {
     position: relative;
     width: 300px;
     height: 180px;
-    background: linear-gradient(var(--envelope-base) 0.5px, var(--envelope-highlight) 0.5px);
+    background: linear-gradient(var(--envelope-highlight) 0.5px, var(--envelope-mid) 0.5px);
     cursor: pointer;
 }
 

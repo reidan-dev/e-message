@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For %%NAME%%</title>
+    <title>For %NAME%</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/CSSRulePlugin.min.js"></script>
@@ -21,11 +21,11 @@
             <div class="letter" id="letter-1">
                 <span class="close" onclick="event.stopPropagation(); openLetter2()">
                     <div class="body">
-                        <div class="message">
-                            My Beloved <b>Jelo</b>,<br />
-                            This song is for you.<br />
-                            Warm wishes,<br />
-                            <b>Dan</b>
+                        <div class="message message-front">
+                            <br/><br/>
+                            To <b>%RECEIVER%</b>,
+                            <br/><br/>
+                            %MESSAGE_FRONT%
                         </div>
                     </div>
                 </span>
@@ -35,12 +35,12 @@
             <div class="letter" id="letter-2">
                 <span class="close" onclick="event.stopPropagation(); closeCard()">
                     <div class="body">
-                        <div class="message">
-                            My Beloved <b>Jelo</b>,<br /><br />
-                            As this year comes to a close, I want to take a moment to express how proud I am of your incredible resilience. You have faced challenges with strength and grace, and it has been inspiring to witness your journey. Your determination and ability to rise above adversity are truly remarkable.<br />
-                            As we look forward to 2025, I hope it brings you even more opportunities for growth, happiness, and success. May this new year be filled with joy, prosperity, and all the beautiful moments you deserve. Keep shining bright!<br /><br />
-                            Yours always,<br />
-                            <b>Dan</b>
+                        <div class="message message-main">
+                            <br/>
+                            %MESSAGE_MAIN%
+                            <br/><br/>
+                            %CLOSING_REMARK% <br/>
+                            <b> - %SENDER% </b>
                         </div>
                     </div>
                 </span>
