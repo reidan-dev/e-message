@@ -61,7 +61,36 @@ async function processData() {
     document.querySelector(".message-front").innerHTML = `<br/><br/> To <b>${nickName}</b>, <br/><br/>${messageFront}<br/>`;
     document.querySelector(".message-main").innerHTML = `<br/>${messageMain}<br/><br/>${closingRemarks} <br/><b>- ${sender}</b>`;
 
-    // Spotify iframe initialization
+    // // Spotify iframe initialization
+    // window.onSpotifyIframeApiReady = (IFrameAPI) => {
+    //     const embedElement = document.getElementById('embed-iframe');
+    //     const spotifyOptions = {
+    //         width: '75%',
+    //         height: '100',
+    //         uri: 'https://open.spotify.com/playlist/' + uri,
+    //     };
+
+    //     // Function to create Spotify player and set up playback controls
+    //     const createSpotifyPlayer = () => {
+    //         IFrameAPI.createController(embedElement, spotifyOptions, (EmbedController) => {
+    //             const triggerPlay = () => {
+    //                 EmbedController.play(); // Trigger playback
+    //                 playOnClickOrTouch(bgMode, bgChars); // Any additional playback actions
+    //             };
+
+    //             // Add event listeners for 'click' and 'touchstart' to play the track
+    //             const containerElement = document.getElementById("container");
+    //             containerElement.addEventListener('touchstart', triggerPlay, { once: true });
+    //             containerElement.addEventListener('click', triggerPlay, { once: true });
+    //         });
+    //     };
+
+    //     createSpotifyPlayer();
+    // };
+    // Check if the device is mobile
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const containerElement = document.getElementById("container");
+
     window.onSpotifyIframeApiReady = (IFrameAPI) => {
         const embedElement = document.getElementById('embed-iframe');
         const spotifyOptions = {
@@ -70,23 +99,34 @@ async function processData() {
             uri: 'https://open.spotify.com/playlist/' + uri,
         };
 
-        // Function to create Spotify player and set up playback controls
-        const createSpotifyPlayer = () => {
+        // Show play button if on mobile
+        if (isMobile) {
+            const playOverlay = document.createElement('div');
+            playOverlay.innerText = 'Tap to play 🎶';
+            playOverlay.classList.add('play-overlay');
+            containerElement.appendChild(playOverlay);
+
+            playOverlay.addEventListener('click', () => {
+                // Initialize the Spotify player on click
+                IFrameAPI.createController(embedElement, spotifyOptions, (EmbedController) => {
+                    EmbedController.play();
+                    playOnClickOrTouch(bgMode, bgChars);
+                });
+                playOverlay.remove(); // Remove overlay after play
+            });
+        } else {
+            // Default behavior for desktop
             IFrameAPI.createController(embedElement, spotifyOptions, (EmbedController) => {
                 const triggerPlay = () => {
                     EmbedController.play(); // Trigger playback
-                    playOnClickOrTouch(bgMode, bgChars); // Any additional playback actions
+                    playOnClickOrTouch(bgMode, bgChars);
                 };
-
-                // Add event listeners for 'click' and 'touchstart' to play the track
-                const containerElement = document.getElementById("container");
-                containerElement.addEventListener('click', triggerPlay, { once: true });
                 containerElement.addEventListener('touchstart', triggerPlay, { once: true });
+                containerElement.addEventListener('click', triggerPlay, { once: true });
             });
-        };
-
-        createSpotifyPlayer();
+        }
     };
+
 }
 
 processData();
