@@ -70,21 +70,23 @@ async function processData() {
             uri: 'https://open.spotify.com/playlist/' + uri,
         };
 
-        const setupSpotifyPlayer = (EmbedController) => {
-            EmbedController.play(); // Automatically play on load
+        // Function to create Spotify player and set up playback controls
+        const createSpotifyPlayer = () => {
+            IFrameAPI.createController(embedElement, spotifyOptions, (EmbedController) => {
+                const triggerPlay = () => {
+                    EmbedController.play(); // Trigger playback
+                    playOnClickOrTouch(bgMode, bgChars); // Any additional playback actions
+                };
+
+                // Add event listeners for 'click' and 'touchstart' to play the track
+                const containerElement = document.getElementById("container");
+                containerElement.addEventListener('click', triggerPlay, { once: true });
+                containerElement.addEventListener('touchstart', triggerPlay, { once: true });
+            });
         };
 
-        IFrameAPI.createController(embedElement, spotifyOptions, setupSpotifyPlayer);
+        createSpotifyPlayer();
     };
-
-
-
-    const containerElement = document.getElementById("container");
-    const playHandler = () => {
-        playOnClickOrTouch(bgMode, bgChars);
-    };
-    containerElement.addEventListener('click', playHandler, { once: true });
-    containerElement.addEventListener('touchstart', playHandler, { once: true });
 }
 
 processData();
