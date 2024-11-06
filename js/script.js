@@ -59,6 +59,7 @@ const fetchData = async () => {
         
         // Spotify Embedded
         let isPlayed = false;
+
         window.onSpotifyIframeApiReady = (IFrameAPI) => {
             const embedElement = document.getElementById('embed-iframe');
             const spotifyOptions = {
@@ -76,8 +77,6 @@ const fetchData = async () => {
                     
                     if (!isPlayed) {
                         EmbedController.play();
-                        // Initialize with a default mode
-                        playAnimation(bgMode, bgChars);
                         isPlayed = true;
                     }
                 };
@@ -88,7 +87,13 @@ const fetchData = async () => {
 
             IFrameAPI.createController(embedElement, spotifyOptions, setupSpotifyPlayer);
         };
-
+        document.querySelector("#envelope").addEventListener('click', () => {
+            playAnimation(bgMode, bgChars);
+        });
+        
+        document.querySelector("#envelope").addEventListener('touchstart', () => {
+            playAnimation(bgMode, bgChars);
+        });    
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error); // Handle errors
     }
@@ -104,7 +109,7 @@ const letter2 = document.querySelector('#letter-2');
 
 const openEnvelopeTimeline = gsap.timeline({ paused: true });
 openEnvelopeTimeline
-    .to(".envelope-flap", { duration: 0.5, rotateX: 180 })
+    .to(".envelope-flap", { duration: 0.2, rotateX: 180 })
     .set(".envelope-flap", { zIndex: 10 })
     .to('#letter-1', {
         translateY: -300,
@@ -122,7 +127,7 @@ openEnvelopeTimeline
 
 const shadowAnimationTimeline = gsap.timeline({ paused: true });
 shadowAnimationTimeline.to('.shadow', {
-    delay: 1.4,
+    delay: 1.1,
     width: 450,
     boxShadow: "-75px 200px 10px 5px var(--drop-shadow)",
     ease: "back.out(0.2)",
@@ -134,7 +139,7 @@ openSecondLetterTimeline
     .to('#letter-2', {
         translateY: -350,
         duration: 0.9,
-        ease: "back.inOut(1.5)",
+        ease: "back.inOut(1.2)",
         height: letter2.offsetHeight + 55,
         rotateZ: 22
     })
@@ -211,7 +216,7 @@ function adjustColor(hex, lightnessFactor = 0.2, darknessFactor = 0.2) {
 // Background Animation
 // Configurations
 const CHARACTERS = ["💌💖💫❤️✨🌸"]; // Customize with any emojis, strings, or letters
-const characterCount = 30; // Number of animated characters
+const characterCount = 20; // Number of animated characters
 const animationModes = {
     falling: animateFalling,
     rising: animateRising,
@@ -258,7 +263,7 @@ function animateFalling(char) {
         opacity: Math.random() + 0.5,
     });
     gsap.to(char, {
-        y: window.innerHeight + 50,
+        y: window.outerHeight + 50,
         duration: Math.random() * 3 + 2,
         repeat: -1,
         ease: 'none',
@@ -268,8 +273,8 @@ function animateFalling(char) {
 
 function animateRising(char) {
     gsap.set(char, {
-        x: Math.random() * window.innerWidth,
-        y: window.innerHeight + 50,
+        x: Math.random() * window.outerWidth,
+        y: window.outerHeight + 50,
         opacity: Math.random() + 0.5,
     });
     gsap.to(char, {
@@ -283,13 +288,13 @@ function animateRising(char) {
 
 function animateRandom(char) {
     gsap.set(char, {
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
+        x: Math.random() * window.outerWidth,
+        y: Math.random() * window.outerHeight,
         opacity: Math.random() + 0.5,
     });
     gsap.to(char, {
-        x: 'random(0, ' + window.innerWidth + ')',
-        y: 'random(0, ' + window.innerHeight + ')',
+        x: 'random(0, ' + window.outerWidth + ')',
+        y: 'random(0, ' + window.outerHeight + ')',
         duration: Math.random() * 3 + 2,
         repeat: -1,
         ease: 'power1.inOut',
@@ -300,12 +305,12 @@ function animateRandom(char) {
 function animateDiagonal(char) {
     gsap.set(char, {
         x: -50,
-        y: Math.random() * window.innerHeight,
+        y: Math.random() * window.outerHeight,
         opacity: Math.random() + 0.5,
     });
     gsap.to(char, {
-        x: window.innerWidth + 50,
-        y: 'random(0, ' + window.innerHeight + ')',
+        x: window.outerWidth + 50,
+        y: 'random(0, ' + window.outerHeight + ')',
         duration: Math.random() * 4 + 3,
         repeat: -1,
         ease: 'none',
@@ -315,8 +320,8 @@ function animateDiagonal(char) {
 
 function animateSpin(char) {
     gsap.set(char, {
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
+        x: Math.random() * window.outerWidth,
+        y: Math.random() * window.outerHeight,
         rotation: Math.random() * 360,
         opacity: Math.random() + 0.5,
     });
@@ -330,8 +335,8 @@ function animateSpin(char) {
 
 function animateZoom(char) {
     gsap.set(char, {
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
+        x: Math.random() * window.outerWidth,
+        y: Math.random() * window.outerHeight,
         scale: 0.1,
         opacity: Math.random() + 0.5,
     });
@@ -347,8 +352,8 @@ function animateZoom(char) {
 
 function animateFlash(char) {
     gsap.set(char, {
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
+        x: Math.random() * window.outerWidth,
+        y: Math.random() * window.outerHeight,
         opacity: 0,
     });
     gsap.to(char, {
@@ -402,8 +407,8 @@ function animateWave(char) {
 
 function animateBounce(char) {
     gsap.set(char, {
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * (window.innerHeight - 50) + 50,
+        x: Math.random() * window.outerWidth,
+        y: Math.random() * (window.outerHeight - 50) + 50,
         opacity: Math.random() + 0.5,
     });
     gsap.to(char, {
