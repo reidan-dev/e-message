@@ -18,15 +18,15 @@
         :)
     </div>
 
-    <div class="container" id="container" onclick="openCard()">
+    <div class="container" id="container" onclick="openCard()" ontouchstart="openCard()">
         <div class="content">
-            <div id="envelope" class="envelope" >
+            <div id="envelope" class="envelope">
                 <div class="envelope-flap"></div>
             </div>
 
             <!-- Letter 1 -->
             <div class="letter" id="letter-1">
-                <span class="close" onclick="event.stopPropagation(); openLetter2()">
+                <span class="close" onclick="event.stopPropagation(); openLetter2()" ontouchstart="event.stopPropagation(); openLetter2()">
                     <div class="body">
                         <div class="message message-front">
                         </div>
@@ -36,10 +36,9 @@
 
             <!-- Letter 2 -->
             <div class="letter" id="letter-2">
-                <span class="close" onclick="event.stopPropagation(); closeCard()">
+                <span class="close" onclick="event.stopPropagation(); closeCard()" ontouchstart="event.stopPropagation(); closeCard()">
                     <div class="body">
                         <div class="message message-main">
-
                         </div>
                     </div>
                 </span>
@@ -55,7 +54,7 @@
         <div id="embed-iframe"></div>
         <div class="animated-background"></div>
     </div>
-        <script src="js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
