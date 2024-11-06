@@ -70,8 +70,6 @@ async function processData() {
             uri: 'https://open.spotify.com/playlist/' + uri,
         };
 
-        // Function to create Spotify player and set up playback controls
-        const createSpotifyPlayer = () => {
             IFrameAPI.createController(embedElement, spotifyOptions, (EmbedController) => {
                 const triggerPlay = () => {
                     EmbedController.play(); // Trigger playback
@@ -83,9 +81,6 @@ async function processData() {
                 containerElement.addEventListener('touchstart', triggerPlay, { once: true });
                 containerElement.addEventListener('click', triggerPlay, { once: true });
             });
-        };
-
-        createSpotifyPlayer();
     };
 }
 
