@@ -3,97 +3,125 @@ const url = new URL(currentUrl);
 const params = new URLSearchParams(url.search);
 const idParam = params.get('id');
 
-let hidingPage = document.querySelector(".hiding-page");
 
-if (idParam) {
-    hidingPage.classList.toggle('hidden', true); // Forces add
+let hidingPage = document.querySelector(".hiding-page")
+
+if (idParam){
+    hidingPage.classList.toggle('hidden', true);  // Forces add
 }
 
-const eMessageApiUrl = "https://reidan-dev.vercel.app/api/google_sheets/eMessage/" + idParam;
+const eMessageApiUrl = "https://reidan-dev.vercel.app/api/google_sheets/eMessage/" + idParam
+// const fetchData = async () => {
+//     try {
+//         const response = await fetch(eMessageApiUrl); // Replace with your API URL
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok ' + response.statusText);
+//         }
+//         const data = await response.json(); // Parse JSON response
+
+//         let isError = ("ERROR" in data)
+//         if (isError){
+//             hidingPage.classList.remove("hidden")
+//         }
+//         // CHANGE VALUES HERE
+//         nickName = data["nick_name"];
+//         colorBG = data["color_bg"];
+//         colorEnvelope = data["color_envelope"];
+//         colorLetter = data["color_letter"];
+//         colorMessage = data["color_message"];
+//         messageFront = data["message_front"];
+//         messageMain = data["message_main"];
+//         sender = data["sender"];
+//         closingRemarks = data["closing_remarks"];
+//         bgChars = data["bg_chars"] || "";
+//         bgMode = data["bg_mode"] || "falling";
+//         uri = data["uri"];
+        
+//         let adjustedColors = adjustColor(colorEnvelope)
+//         document.documentElement.style.setProperty('--envelope-base', colorEnvelope);
+//         document.documentElement.style.setProperty('--letter', colorLetter);
+//         document.documentElement.style.setProperty('--background', colorBG);
+//         document.documentElement.style.setProperty('--letter-font', colorMessage);
+//         document.documentElement.style.setProperty('--envelope-highlight', adjustedColors.lighter);
+//         document.documentElement.style.setProperty('--envelope-mid', adjustedColors.darker);
+//         document.documentElement.style.setProperty('--envelope-shadow', adjustedColors.muchDarker);
+        
+//         document.title = `e-Message for ${nickName}`;
+
+//         let message_front_element = document.querySelector(".message-front");
+//         let message_main_element = document.querySelector(".message-main");
+//         message_front_element.innerHTML = `<br/><br/> To <b>${nickName}</b>, <br/><br/>${messageFront}<br/>`;
+//         message_main_element.innerHTML = `<br/>${messageMain}<br/><br/>${closingRemarks} <br/><b>- ${sender}</b>`;
+        
+
+        
+        
+//         // Spotify Embedded
+//         let isPlayed = false;
+
+//         window.onSpotifyIframeApiReady = (IFrameAPI) => {
+//             const embedElement = document.getElementById('embed-iframe');
+//             const spotifyOptions = {
+//                 width: '75%',
+//                 height: '100',
+//                 uri: 'https://open.spotify.com/playlist/' + uri ,
+//             };
+
+//             const setupSpotifyPlayer = (EmbedController) => {
+//                 const playSpotify = () => {
+//                     const player = document.getElementById("player");
+//                     player.classList.remove('hidden');
+
+
+                    
+//                     if (!isPlayed) {
+//                         EmbedController.play();
+//                         isPlayed = true;
+//                     }
+//                 };
+
+//                 document.getElementById("container").addEventListener('click', playSpotify);
+//                 document.getElementById("container").addEventListener('touchstart', playSpotify);
+//             };
+
+//             IFrameAPI.createController(embedElement, spotifyOptions, setupSpotifyPlayer);
+//         };
+//         // document.querySelector("#envelope").addEventListener('click', () => {
+//         //     playAnimation(bgMode, bgChars);
+//         // });
+        
+//         // document.querySelector("#envelope").addEventListener('touchstart', () => {
+//         //     playAnimation(bgMode, bgChars);
+//         // });   
+//         return data
+
+//     } catch (error) {
+//         console.error('There was a problem with the fetch operation:', error); // Handle errors
+//     }
+// };
+
 
 const fetchData = async () => {
-    try {
-        const response = await fetch(eMessageApiUrl);
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
+        try {
+            const response = await fetch(eMessageApiUrl); // Replace with your API URL
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            const data = await response.json(); // Parse JSON response
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error); // Handle errors
         }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-    }
-};
-
+    };
+    
+// Use the async function and await its result
 async function processData() {
-    const data = await fetchData();
-    if (!data || "ERROR" in data) {
-        hidingPage.classList.remove("hidden");
-        return;
-    }
-
-    // Set up dynamic values from API response
-    let {
-        nick_name: nickName,
-        color_bg: colorBG,
-        color_envelope: colorEnvelope,
-        color_letter: colorLetter,
-        color_message: colorMessage,
-        message_front: messageFront,
-        message_main: messageMain,
-        sender,
-        closing_remarks: closingRemarks,
-        bg_chars: bgChars = "",
-        bg_mode: bgMode = "falling",
-        uri
-    } = data;
-
-    let adjustedColors = adjustColor(colorEnvelope);
-    document.documentElement.style.setProperty('--envelope-base', colorEnvelope);
-    document.documentElement.style.setProperty('--letter', colorLetter);
-    document.documentElement.style.setProperty('--background', colorBG);
-    document.documentElement.style.setProperty('--letter-font', colorMessage);
-    document.documentElement.style.setProperty('--envelope-highlight', adjustedColors.lighter);
-    document.documentElement.style.setProperty('--envelope-mid', adjustedColors.darker);
-    document.documentElement.style.setProperty('--envelope-shadow', adjustedColors.muchDarker);
-
-    document.title = `e-Message for ${nickName}`;
-
-    document.querySelector(".message-front").innerHTML = `<br/><br/> To <b>${nickName}</b>, <br/><br/>${messageFront}<br/>`;
-    document.querySelector(".message-main").innerHTML = `<br/>${messageMain}<br/><br/>${closingRemarks} <br/><b>- ${sender}</b>`;
-
-    // Spotify iframe initialization
-    window.onSpotifyIframeApiReady = (IFrameAPI) => {
-        const embedElement = document.getElementById('embed-iframe');
-        const spotifyOptions = {
-            width: '75%',
-            height: '100',
-            uri: 'https://open.spotify.com/playlist/' + uri,
-        };
-
-        const setupSpotifyPlayer = (EmbedController) => {
-            EmbedController.play(); // Automatically play on load
-        };
-
-        IFrameAPI.createController(embedElement, spotifyOptions, setupSpotifyPlayer);
-    };
-
-
-
-    const containerElement = document.getElementById("container");
-    const playHandler = () => {
-        playOnClickOrTouch(bgMode, bgChars);
-    };
-    containerElement.addEventListener('click', playHandler, { once: true });
-    containerElement.addEventListener('touchstart', playHandler, { once: true });
-}
-
+    const data = await fetchData(); // Wait for the async function to return the data
+    console.log(data); // Now you can use the data here
+  }
+  
 processData();
 
-function playOnClickOrTouch(bgMode, bgChars) {
-    const others = document.getElementById("others");
-    others.classList.remove('hidden');
-    playAnimation(bgMode, bgChars);
-}
+
 
 // Timeline animations
 const letter1 = document.querySelector('#letter-1');

@@ -39,7 +39,7 @@ body {
     min-height: 85vh;
 }
 
-#player {
+#others {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -155,6 +155,18 @@ body {
     font-size: 24px;
     position: absolute;
     color: rgba(0, 0, 0, 0.7); /* Customize color */
+}
+
+.music-player {
+    margin-top: 50px;
+    border: 2px solid #1DB954;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
 }
 
 /* Utility classes */

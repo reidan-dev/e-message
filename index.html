@@ -8,16 +8,19 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/CSSRulePlugin.min.js"></script>
+    <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+
 </head>
 
 <body>
+
     <div class="hiding-page" style="background-color: whitesmoke;">
         :)
     </div>
 
-    <div class="container" id="container">
+    <div class="container" id="container" onclick="openCard()">
         <div class="content">
-            <div id="envelope" class="envelope" onclick="openCard()">
+            <div id="envelope" class="envelope" >
                 <div class="envelope-flap"></div>
             </div>
 
@@ -46,13 +49,13 @@
         </div>
     </div>
 
-    <div id="player" class="hidden" style="z-index: 100;">
-        <div id="embed-iframe"></div>
-        <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
-        <script src="js/script.js"></script>
-    </div>
-    <!-- <div class="animated-background"></div> -->
+    <div id="spotify-player"></div>
 
+    <div id="others" class="hidden">
+        <div id="embed-iframe"></div>
+        <div class="animated-background"></div>
+    </div>
+        <script src="js/script.js"></script>
 </body>
 
 </html>
