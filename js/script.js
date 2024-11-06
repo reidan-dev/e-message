@@ -72,8 +72,8 @@ async function processData() {
 
             IFrameAPI.createController(embedElement, spotifyOptions, (EmbedController) => {
                 const triggerPlay = () => {
-                    others.classList.remove('hidden');
                     EmbedController.play(); // Trigger playback
+                    playOnClickOrTouch(bgMode, bgChars); // Any additional playback actions
                 };
 
                 // Add event listeners for 'click' and 'touchstart' to play the track
@@ -82,14 +82,14 @@ async function processData() {
                 contentElement.addEventListener('click', triggerPlay, { once: true });
             });
     };
-    playOnClickOrTouch(bgMode, bgChars); // Any additional playback actions
-    const others = document.getElementById("others");
 }
 
 
 processData();
 
 function playOnClickOrTouch(bgMode, bgChars) {
+    const others = document.getElementById("others");
+    others.classList.remove('hidden');
     playAnimation(bgMode, bgChars);
 }
 
