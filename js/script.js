@@ -87,13 +87,13 @@ const fetchData = async () => {
 
             IFrameAPI.createController(embedElement, spotifyOptions, setupSpotifyPlayer);
         };
-        document.querySelector("#envelope").addEventListener('click', () => {
-            playAnimation(bgMode, bgChars);
-        });
+        // document.querySelector("#envelope").addEventListener('click', () => {
+        //     playAnimation(bgMode, bgChars);
+        // });
         
-        document.querySelector("#envelope").addEventListener('touchstart', () => {
-            playAnimation(bgMode, bgChars);
-        });    
+        // document.querySelector("#envelope").addEventListener('touchstart', () => {
+        //     playAnimation(bgMode, bgChars);
+        // });    
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error); // Handle errors
     }
