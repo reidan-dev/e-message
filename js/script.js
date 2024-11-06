@@ -4,9 +4,10 @@ const params = new URLSearchParams(url.search);
 const idParam = params.get('id');
 
 
-const container = document.querySelector(".container")
-if (!idParam){
-    container.classList.remove("hidden")
+let hidingPage = document.querySelector(".hiding-page")
+
+if (idParam){
+    hidingPage.classList.toggle('hidden', true);  // Forces add
 }
 
 const eMessageApiUrl = "https://reidan-dev.vercel.app/api/google_sheets/eMessage/" + idParam
@@ -18,22 +19,24 @@ const fetchData = async () => {
         }
         const data = await response.json(); // Parse JSON response
 
-        if (!("ERROR" in data)){
-            container.classList.remove("hidden")
+        let isError = ("ERROR" in data)
+        if (isError){
+            hidingPage.classList.remove("hidden")
         }
 
-
         // CHANGE VALUES HERE
-        nickName = data["nick_name"]
-        colorBG = data["color_bg"]
-        colorEnvelope = data["color_envelope"]
-        colorLetter = data["color_letter"]
-        colorMessage = data["color_message"]
-        messageFront = data["message_front"]
-        messageMain = data["message_main"]
-        sender = data["sender"]
-        closingRemarks = data["closing_remarks"]
-        uri = data["uri"]
+        nickName = data["nick_name"];
+        colorBG = data["color_bg"];
+        colorEnvelope = data["color_envelope"];
+        colorLetter = data["color_letter"];
+        colorMessage = data["color_message"];
+        messageFront = data["message_front"];
+        messageMain = data["message_main"];
+        sender = data["sender"];
+        closingRemarks = data["closing_remarks"];
+        bgChars = data["bg_chars"] || "";
+        bgMode = data["bg_mode"] || "falling";
+        uri = data["uri"];
         
         let adjustedColors = adjustColor(colorEnvelope)
         document.documentElement.style.setProperty('--envelope-base', colorEnvelope);
@@ -44,13 +47,16 @@ const fetchData = async () => {
         document.documentElement.style.setProperty('--envelope-mid', adjustedColors.darker);
         document.documentElement.style.setProperty('--envelope-shadow', adjustedColors.muchDarker);
         
-        document.title = `e-Message for ${nickName}`
+        document.title = `e-Message for ${nickName}`;
 
-        let message_front_element = document.querySelector(".message-front")
-        let message_main_element = document.querySelector(".message-main")
-        message_front_element.innerHTML = `<br/><br/> To <b>${nickName}</b>, <br/><br/>${messageFront}<br/>`
-        message_main_element.innerHTML = `<br/>${messageMain}<br/><br/>${closingRemarks} <br/><b>- ${sender}</b>`
+        let message_front_element = document.querySelector(".message-front");
+        let message_main_element = document.querySelector(".message-main");
+        message_front_element.innerHTML = `<br/><br/> To <b>${nickName}</b>, <br/><br/>${messageFront}<br/>`;
+        message_main_element.innerHTML = `<br/>${messageMain}<br/><br/>${closingRemarks} <br/><b>- ${sender}</b>`;
+        
 
+        
+        
         // Spotify Embedded
         let isPlayed = false;
         window.onSpotifyIframeApiReady = (IFrameAPI) => {
@@ -65,8 +71,13 @@ const fetchData = async () => {
                 const playSpotify = () => {
                     const player = document.getElementById("player");
                     player.classList.remove('hidden');
+
+
+                    
                     if (!isPlayed) {
                         EmbedController.play();
+                        // Initialize with a default mode
+                        playAnimation(bgMode, bgChars);
                         isPlayed = true;
                     }
                 };
@@ -195,4 +206,231 @@ function adjustColor(hex, lightnessFactor = 0.2, darknessFactor = 0.2) {
         darker: darkerColor,
         muchDarker: muchDarkerColor,
     };
+}
+
+// Background Animation
+// Configurations
+const CHARACTERS = ["💌💖💫❤️✨🌸"]; // Customize with any emojis, strings, or letters
+const characterCount = 30; // Number of animated characters
+const animationModes = {
+    falling: animateFalling,
+    rising: animateRising,
+    random: animateRandom,
+    diagonal: animateDiagonal,
+    spiral: animateSpiral,
+    bounce: animateBounce,
+    wave: animateWave,
+    orbit: animateOrbit,
+    flash: animateFlash,
+    zoom: animateZoom,
+    spin: animateSpin
+};
+
+
+function playAnimation(mode, chars) {
+    document.querySelector('.animated-background').innerHTML = '';
+    chars = chars.split(",") || [""];
+    if (chars){
+        for (let i = 0; i < characterCount; i++) {
+            const char = document.createElement('div');
+            char.classList.add('animated-character');
+            char.innerText = chars[Math.floor(Math.random() * chars.length)];
+            document.querySelector('.animated-background').appendChild(char);
+
+            // Look up and execute the animation function based on the mode
+            const animationFunction = animationModes[mode];
+            if (animationFunction) {
+                animationFunction(char); // Execute the mode's animation function
+            } else {
+                console.warn(`Unknown mode: ${mode}`);
+                animateFalling(char);
+            }
+        }
+    }
+}
+
+
+// Animation Modes
+function animateFalling(char) {
+    gsap.set(char, {
+        x: Math.random() * window.innerWidth,
+        y: -50,
+        opacity: Math.random() + 0.5,
+    });
+    gsap.to(char, {
+        y: window.innerHeight + 50,
+        duration: Math.random() * 3 + 2,
+        repeat: -1,
+        ease: 'none',
+        delay: Math.random() * 2,
+    });
+}
+
+function animateRising(char) {
+    gsap.set(char, {
+        x: Math.random() * window.innerWidth,
+        y: window.innerHeight + 50,
+        opacity: Math.random() + 0.5,
+    });
+    gsap.to(char, {
+        y: -50,
+        duration: Math.random() * 3 + 2,
+        repeat: -1,
+        ease: 'none',
+        delay: Math.random() * 2,
+    });
+}
+
+function animateRandom(char) {
+    gsap.set(char, {
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        opacity: Math.random() + 0.5,
+    });
+    gsap.to(char, {
+        x: 'random(0, ' + window.innerWidth + ')',
+        y: 'random(0, ' + window.innerHeight + ')',
+        duration: Math.random() * 3 + 2,
+        repeat: -1,
+        ease: 'power1.inOut',
+        delay: Math.random() * 2,
+    });
+}
+
+function animateDiagonal(char) {
+    gsap.set(char, {
+        x: -50,
+        y: Math.random() * window.innerHeight,
+        opacity: Math.random() + 0.5,
+    });
+    gsap.to(char, {
+        x: window.innerWidth + 50,
+        y: 'random(0, ' + window.innerHeight + ')',
+        duration: Math.random() * 4 + 3,
+        repeat: -1,
+        ease: 'none',
+        delay: Math.random() * 2,
+    });
+}
+
+function animateSpin(char) {
+    gsap.set(char, {
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        rotation: Math.random() * 360,
+        opacity: Math.random() + 0.5,
+    });
+    gsap.to(char, {
+        rotation: '+=360',
+        duration: Math.random() * 2 + 1,
+        repeat: -1,
+        ease: 'none',
+    });
+}
+
+function animateZoom(char) {
+    gsap.set(char, {
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        scale: 0.1,
+        opacity: Math.random() + 0.5,
+    });
+    gsap.to(char, {
+        scale: Math.random() * 1.5 + 0.5,
+        duration: Math.random() * 3 + 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut',
+        delay: Math.random() * 1,
+    });
+}
+
+function animateFlash(char) {
+    gsap.set(char, {
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        opacity: 0,
+    });
+    gsap.to(char, {
+        opacity: Math.random(),
+        duration: Math.random() * 0.5 + 0.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut',
+        delay: Math.random() * 1,
+    });
+}
+
+function animateOrbit(char) {
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const radius = Math.random() * 150 + 150; // Random orbit radius
+    const angle = Math.random() * 360; // Starting angle
+    gsap.set(char, {
+        x: centerX + Math.cos(angle) * radius,
+        y: centerY + Math.sin(angle) * radius,
+        opacity: Math.random() + 0.5,
+    });
+    gsap.to(char, {
+        rotation: 360,
+        duration: Math.random() * 3 + 2,
+        modifiers: {
+            x: gsap.utils.unitize(() => centerX + Math.cos(angle) * radius),
+            y: gsap.utils.unitize(() => centerY + Math.sin(angle) * radius),
+        },
+        repeat: -1,
+        ease: 'linear',
+    });
+}
+
+function animateWave(char) {
+    const startY = Math.random() * window.innerHeight;
+    gsap.set(char, {
+        x: -50,
+        y: startY,
+        opacity: Math.random() + 0.5,
+    });
+    gsap.to(char, {
+        x: window.innerWidth + 50,
+        y: startY + Math.sin(Math.random() * 360) * 50,
+        duration: Math.random() * 4 + 3,
+        repeat: -1,
+        ease: 'sine.inOut',
+        delay: Math.random() * 1,
+    });
+}
+
+function animateBounce(char) {
+    gsap.set(char, {
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * (window.innerHeight - 50) + 50,
+        opacity: Math.random() + 0.5,
+    });
+    gsap.to(char, {
+        y: '+=100',
+        yoyo: true,
+        repeat: -1,
+        duration: Math.random() * 1.5 + 1,
+        ease: 'bounce.inOut',
+    });
+}
+
+function animateSpiral(char) {
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const angle = Math.random() * 360;
+    gsap.set(char, {
+        x: centerX,
+        y: centerY,
+        opacity: Math.random() + 0.5,
+    });
+    gsap.to(char, {
+        x: `+=${Math.cos(angle) * 500}`,
+        y: `+=${Math.sin(angle) * 500}`,
+        rotation: 360,
+        duration: Math.random() * 3 + 2,
+        repeat: -1,
+        ease: 'power1.inOut',
+        delay: Math.random() * 2,
+    });
 }
