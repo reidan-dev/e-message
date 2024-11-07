@@ -3,11 +3,11 @@ const url = new URL(currentUrl);
 const params = new URLSearchParams(url.search);
 const idParam = params.get('id');
 
-let hidingPage = document.querySelector(".hiding-page");
+// let hidingPage = document.querySelector(".hiding-page");
 
-if (idParam) {
-    hidingPage.classList.toggle('hidden', true); // Forces add
-}
+// if (idParam) {
+//     hidingPage.classList.toggle('hidden', true); // Forces add
+// }
 
 const eMessageApiUrl = "https://reidan-dev.vercel.app/api/google_sheets/eMessage/" + idParam;
 
@@ -26,10 +26,10 @@ const fetchData = async () => {
 
 async function processData() {
     const data = await fetchData();
-    if (!data || "ERROR" in data) {
-        hidingPage.classList.remove("hidden");
-        return;
-    }
+    // if (!data || "ERROR" in data) {
+    //     // hidingPage.classList.remove("hidden");
+    //     return;
+    // }
 
     // Set up dynamic values from API response
     let {
