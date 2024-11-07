@@ -154,7 +154,7 @@ function openLetter2() {
     openSecondLetterTimeline.play();
 }
 
-function adjustColor(hex, lightnessFactor = 0.2, darknessFactor = 0.2) {
+function adjustColor(hex, lightnessFactor = 0.07, darknessFactor = 0.07) {
     // Convert hex to RGB
     let r = parseInt(hex.slice(1, 3), 16);
     let g = parseInt(hex.slice(3, 5), 16);
