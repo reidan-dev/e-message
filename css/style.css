@@ -16,7 +16,7 @@
 
 body {
     overflow: hidden;
-    background-color:var(--background);
+    background-color: var(--background);
 }
 
 * {
@@ -56,6 +56,7 @@ body {
 /* Letter styling */
 .letter {
     position: absolute;
+    overflow: hidden; /* To ensure the blobs don't go out of bounds */
     top: 10px;
     left: 10px;
     width: 280px;
@@ -149,6 +150,8 @@ body {
     position: absolute;
     color: rgba(0, 0, 0, 0.7); /* Customize color */
 }
+
+/* Blob styling */
 
 /* Utility classes */
 .hidden {
