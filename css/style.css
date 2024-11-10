@@ -44,20 +44,20 @@ body {
     perspective: 600px;
 }
 
-.content::after {
+/* .content::after {
     content: '';
     position: absolute;
-    top: 5px; /* Offset inward by 5px to create the inner outline */
+    top: 5px; 
     left: 5px;
     right: 5px;
     bottom: 5px;
-    opacity: 0.3;
-    border: 4px dashed var(--background); /* Dashed border inside the element */
-    border-radius: inherit; /* Follow the parent element’s shape */
-    pointer-events: none; /* Allows clicks to go through to the main element */
-    z-index: 31; /* Ensure it’s on top of the main background but under any other content */
+    opacity: 0.5;
+    border: 2px dashed var(--background);
+    border-radius: inherit;
+    pointer-events: none; 
+    z-index: 31; 
     border-top: transparent;
-}
+} */
 
 .shadow {
     position: absolute;
