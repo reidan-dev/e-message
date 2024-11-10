@@ -21,6 +21,7 @@ const fetchData = async () => {
         if (!("ERROR" in data)){
             container.classList.remove("hidden")
         }
+        setInterval(changeCircleBorderRadius, 2000); // Update every 2 seconds
 
 
         // Set up dynamic values from API response
@@ -54,7 +55,9 @@ const fetchData = async () => {
         let message_main_element = document.querySelector(".message-main")
         message_front_element.innerHTML = `<br/><br/><b>To ${nickName}</b>, <br/><br/>${messageFront}<br/>`
         message_main_element.innerHTML = `<br/>${messageMain}<br/><br/>${closingRemarks} <br/><b>- ${sender}</b>`
-
+        
+        // 
+        
         // Spotify Embedded
         let isPlayed = false;
         window.onSpotifyIframeApiReady = (IFrameAPI) => {
@@ -218,7 +221,7 @@ function adjustColor(hex, lightnessFactor = 0.09, darknessFactor = 0.05) {
 // Background Animation
 // Configurations
 const CHARACTERS = ["💌💖💫❤️✨🌸"]; // Customize with any emojis, strings, or letters
-const characterCount = 20; // Number of animated characters
+const characterCount = 15; // Number of animated characters
 const animationModes = {
     falling: animateFalling,
     rising: animateRising,
@@ -440,4 +443,60 @@ function animateSpiral(char) {
         ease: 'power1.inOut',
         delay: Math.random() * 2,
     });
+}
+
+function changeCircleBorderRadius() {
+    const blobs = document.querySelectorAll('.blob'); // Select all blobs
+
+    // Generate random values for each of the four corners (25% to 75%)
+    let MAX_BLOB = 75;
+    let MIN_BLOB = 25;
+    let MAX_HEIGHT = 120;
+    let MIN_HEIGHT = 40;
+    let MAX_WIDTH = 350;
+    let MIN_WIDTH = 250;
+
+    blobs.forEach((blob, index) => {
+
+        const topLeft1 = getRandomInt(MIN_BLOB, MAX_BLOB);
+        const topLeft2 = 100 - topLeft1;
+        const topRight1 = getRandomInt(MIN_BLOB, MAX_BLOB);
+        const topRight2 = 100 - topRight1;
+        const bottomLeft1 = getRandomInt(MIN_BLOB, MAX_BLOB);
+        const bottomLeft2 = 100 - bottomLeft1;
+        const bottomRight1 = getRandomInt(MIN_BLOB, MAX_BLOB);
+        const bottomRight2 = 100 - bottomRight1;
+        
+        // Format the border-radius in the desired format
+        const borderRadiusValue = `${topLeft1}% ${topRight1}% ${bottomRight1}% ${bottomLeft1}% / ${topLeft2}% ${topRight2}% ${bottomRight2}% ${bottomLeft2}%`;
+        const colorsList = ["envelope-base", "envelope-mid", "envelope-highlight", "envelope-shadow", "background", "letter-font"]
+        const randomIndex = getRandomInt(0, colorsList.length - 1);
+
+        let color = `var(--${colorsList[randomIndex]})`
+
+        
+        if ([1, 4, 7, 10].includes(index + 1)) {
+            // Apply custom behavior to the 4th, 7th, 10th, and 13th instances
+            // blob.style.backgroundColor = ""; // Example: Change background color to red
+            blob.style.border = `1px dashed ${color}`; // Change border color to red with a 5px width
+            blob.style.opacity = "0.6";
+        } else {
+            blob.style.borderRadius = borderRadiusValue;
+            blob.style.backgroundColor = color;
+            blob.style.opacity = "0.1"; // Set opacity to 0.1
+        }
+        
+        blob.style.width = getRandomInt(MIN_WIDTH, MAX_WIDTH) + "px";
+        blob.style.height = getRandomInt(MIN_HEIGHT, MAX_HEIGHT) + "px";
+
+        // Apply the new border-radius to the circle
+        blob.style.transition = "all 2s"; // Add smooth transition for the change
+
+
+    })
+}
+
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
