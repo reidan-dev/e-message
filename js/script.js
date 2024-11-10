@@ -104,6 +104,7 @@ const fetchData = async () => {
     }
 };
 
+jiggle();
 fetchData(); // Call the async function
 
 
@@ -175,7 +176,7 @@ function openLetter2() {
     openSecondLetterTimeline.play();
 }
 
-function adjustColor(hex, lightnessFactor = 0.09, darknessFactor = 0.05) {
+function adjustColor(hex, lightnessFactor = 0.15, darknessFactor = 0.1) {
     // Convert hex to RGB
     let r = parseInt(hex.slice(1, 3), 16);
     let g = parseInt(hex.slice(3, 5), 16);
@@ -476,14 +477,12 @@ function changeCircleBorderRadius() {
 
         
         if ([1, 4, 7, 10].includes(index + 1)) {
-            // Apply custom behavior to the 4th, 7th, 10th, and 13th instances
-            // blob.style.backgroundColor = ""; // Example: Change background color to red
-            blob.style.border = `1px dashed ${color}`; // Change border color to red with a 5px width
-            blob.style.opacity = "0.6";
+            blob.style.border = `1px dashed ${color}`;
+            blob.style.opacity = `0.${getRandomInt(3,7)}`;
         } else {
             blob.style.borderRadius = borderRadiusValue;
             blob.style.backgroundColor = color;
-            blob.style.opacity = "0.1"; // Set opacity to 0.1
+            blob.style.opacity = `0.${getRandomInt(1,3)}`;
         }
         
         blob.style.width = getRandomInt(MIN_WIDTH, MAX_WIDTH) + "px";
@@ -499,4 +498,21 @@ function changeCircleBorderRadius() {
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+function jiggle() {
+    const content = document.getElementById('content');
+
+    content.style.transform = 'rotate(2deg)';
+    setTimeout(() => {
+        content.style.transform = 'rotate(-2deg)';
+    }, 250); // halfway through the 0.5s animation
+
+    setTimeout(() => {
+        content.style.transform = 'rotate(0deg)';
+    }, 250); // back to original position after 0.5s
+
+    // Wait for 5 seconds before starting again
+    setTimeout(jiggle, 5000);
 }

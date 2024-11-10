@@ -42,6 +42,7 @@ body {
 .content {
     position: relative;
     perspective: 600px;
+    transition: transform 0.5s ease-in-out;
 }
 
 .content::after {
@@ -57,6 +58,7 @@ body {
     pointer-events: none; 
     z-index: 31; 
     border-top: transparent;
+    border-bottom: transparent;
 }
 
 .shadow {
@@ -81,7 +83,7 @@ body {
     justify-content: center;
     background: var(--letter);
     border-radius: 2px;
-    box-shadow: 0px 1px 7px -2px var(--envelope-highlight);
+    box-shadow: 0px 1px 7px -2px var(--envelope-shadow);
     z-index: 15;
 }
 
@@ -117,7 +119,7 @@ body {
     position: relative;
     width: 300px;
     height: 180px;
-    background: linear-gradient(var(--envelope-highlight) 0.5px, var(--envelope-mid) 0.5px);
+    background: linear-gradient(var(--envelope-mid) 0.5px, var(--envelope-shadow) 0.5px);
     cursor: pointer;
     /* border: 2px dashed #FF5733; Dashed border inside the element */
 
@@ -134,9 +136,42 @@ body {
     box-sizing: border-box;
     transform-origin: top;
     z-index: 30;
+    filter: drop-shadow(0px 0px 10px var(--drop-shadow));
+
 }
 
-.envelope::after {
+ .envelope-body-bottom{
+    position: absolute;
+    width: 300px;
+    bottom: 0px;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 115px solid var(--envelope-mid);
+    z-index: 25;
+    filter: drop-shadow(0px 0px 10px var(--envelope-shadow));
+}
+
+.envelope-body-right{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-top: 90px solid transparent;
+    border-bottom: 90px solid transparent;
+    border-right: 150px solid var(--envelope-base);
+    z-index: 25;
+
+}
+
+.envelope-body-left{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-top: 90px solid transparent;
+    border-bottom: 90px solid transparent;
+    border-left: 150px solid var(--envelope-base);
+    z-index: 25;
+}
+/* .envelope::after {
     content: '';
     position: absolute;
     top: 0;
@@ -149,7 +184,9 @@ body {
         linear-gradient(148.7deg, transparent 50%, var(--envelope-shadow) 50%, var(--envelope-base) 51%) 150px 0px / 150px 90px no-repeat;
     z-index: 25;
 
-}
+} */
+
+
 
 /* CSS for the animated background */
 .animated-background {
