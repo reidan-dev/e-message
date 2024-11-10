@@ -44,7 +44,7 @@ body {
     perspective: 600px;
 }
 
-/* .content::after {
+.content::after {
     content: '';
     position: absolute;
     top: 5px; 
@@ -57,7 +57,7 @@ body {
     pointer-events: none; 
     z-index: 31; 
     border-top: transparent;
-} */
+}
 
 .shadow {
     position: absolute;
@@ -133,7 +133,7 @@ body {
     border-right: 150px dashed transparent;
     box-sizing: border-box;
     transform-origin: top;
-    z-index: 32;
+    z-index: 30;
 }
 
 .envelope::after {
