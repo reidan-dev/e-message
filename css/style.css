@@ -128,12 +128,12 @@ body {
     top: 0;
     left: 0;
     width: 300px;
-    border-top: 115px dashed var(--envelope-highlight);
-    border-left: 150px dashed transparent;
-    border-right: 150px dashed transparent;
+    border-top: 115px solid var(--envelope-highlight);
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
     box-sizing: border-box;
     transform-origin: top;
-    z-index: 30;
+    z-index: 32;
 }
 
 .envelope::after {
