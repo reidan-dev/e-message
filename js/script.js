@@ -72,6 +72,17 @@ const fetchData = async () => {
                     if (!isPlayed) {
                         EmbedController.play();
                         playAnimation(bgMode, bgChars);
+
+                        window.addEventListener("beforeunload", function () {
+                            // Stop Spotify player (this might not directly stop it, but you can try pausing it)
+                            EmbedController.togglePlay()
+                        });
+                        
+                        // Alternatively, you can listen to visibility change events
+                        document.addEventListener('visibilitychange', function () {
+                            EmbedController.togglePlay()
+                        });
+                        
                         isPlayed = true;
                     }
                 };
@@ -80,15 +91,6 @@ const fetchData = async () => {
                 document.querySelector("#envelope").addEventListener('touchstart', playSpotify);
 
 
-                window.addEventListener("beforeunload", function () {
-                    // Stop Spotify player (this might not directly stop it, but you can try pausing it)
-                    EmbedController.togglePlay()
-                  });
-                
-                  // Alternatively, you can listen to visibility change events
-                  document.addEventListener('visibilitychange', function () {
-                    EmbedController.togglePlay()
-                  });
             };
 
             IFrameAPI.createController(embedElement, spotifyOptions, setupSpotifyPlayer);
