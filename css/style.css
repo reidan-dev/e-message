@@ -133,7 +133,7 @@ body {
     border-right: 150px solid transparent;
     box-sizing: border-box;
     transform-origin: top;
-    z-index: 32;
+    z-index: 30;
 }
 
 .envelope::after {
