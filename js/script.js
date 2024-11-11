@@ -2,6 +2,7 @@ const currentUrl = window.location.href;
 const url = new URL(currentUrl);
 const params = new URLSearchParams(url.search);
 const idParam = params.get('id');
+let jiggleTimeOutID;
 
 
 const container = document.querySelector(".container")
@@ -37,7 +38,8 @@ const fetchData = async () => {
             closing_remarks: closingRemarks,
             bg_chars: bgChars = "",
             bg_mode: bgMode = "falling",
-            uri
+            uri,
+            date = ""
         } = data;
         
         let adjustedColors = adjustColor(colorEnvelope)
@@ -49,15 +51,33 @@ const fetchData = async () => {
         document.documentElement.style.setProperty('--envelope-mid', adjustedColors.darker);
         document.documentElement.style.setProperty('--envelope-shadow', adjustedColors.muchDarker);
         
-        document.title = `e-Message for ${nickName}`
+        document.title = `e-Message for ${nickName}`;
 
-        let message_front_element = document.querySelector(".message-front")
-        let message_main_element = document.querySelector(".message-main")
-        message_front_element.innerHTML = `<br/><br/><b>To ${nickName}</b>, <br/><br/>${messageFront}<br/>`
-        message_main_element.innerHTML = `<br/>${messageMain}<br/><br/>${closingRemarks} <br/><b>- ${sender}</b>`
+        let messageReceiver = document.querySelector(".message-receiver");
+        let messageGreeting = document.querySelector(".message-greeting");
+        let messageDate = document.querySelector(".message-date");
+        let messageActual = document.querySelector(".message-actual");
+        let messageSender = document.querySelector(".message-sender");
+        let messageClosingRemark = document.querySelector(".message-closing-remark");
+
+        messageReceiver.textContent = messageReceiver.textContent.replace("RECEIVER", nickName);
+        messageGreeting.textContent = messageGreeting.textContent.replace("GREETING", messageFront);
+        messageSender.textContent = messageSender.textContent.replace("SENDER", sender);
+
+        messageMain = messageMain.replace("&&", "<br>")
+        messageMain = messageActual.textContent.replace("MESSAGE_ACTUAL", messageMain)
+        messageActual.innerHTML = messageMain
+
+        closingRemarks = closingRemarks.replace(",", "");
+        messageClosingRemark.textContent = messageClosingRemark.textContent.replace("CLOSING_REMARK", closingRemarks + ",");
+
+        if (!date){
+            date = formatDate();
+        }
+        messageDate.textContent = messageDate.textContent.replace("DATE", date);
         
-        // 
-        
+
+
         // Spotify Embedded
         let isPlayed = false;
         window.onSpotifyIframeApiReady = (IFrameAPI) => {
@@ -104,10 +124,18 @@ const fetchData = async () => {
     }
 };
 
+changeFavicon();
 jiggle();
 fetchData(); // Call the async function
 
-
+function changeFavicon(){
+      // Change favicon to envelope emoji ✉️
+      const emoji = '✉️';  // Envelope emoji
+      const link = document.createElement('link');
+      link.rel = 'icon';
+      link.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text x="0" y="32" font-size="32" font-family="Arial" fill="black">' + emoji + '</text></svg>';
+      document.head.appendChild(link);
+}
 
 // Timeline animations
 const letter1 = document.querySelector('#letter-1');
@@ -164,12 +192,14 @@ openSecondLetterTimeline
 function openCard() {
     openEnvelopeTimeline.play();
     shadowAnimationTimeline.play();
+    clearTimeout(jiggleTimeOutID);
 }
 
 function closeCard() {
     openEnvelopeTimeline.reverse();
     shadowAnimationTimeline.reverse();
     openSecondLetterTimeline.reverse();
+    jiggle();
 }
 
 function openLetter2() {
@@ -500,7 +530,6 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
 function jiggle() {
     const content = document.getElementById('content');
 
@@ -514,5 +543,13 @@ function jiggle() {
     }, 250); // back to original position after 0.5s
 
     // Wait for 5 seconds before starting again
-    setTimeout(jiggle, 5000);
+    jiggleTimeOutID = setTimeout(jiggle, 5000);
+}
+
+function formatDate() {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString('en-US', options);
+    return formattedDate
+
 }
