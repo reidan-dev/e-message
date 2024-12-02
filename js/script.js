@@ -64,7 +64,7 @@ const fetchData = async () => {
         messageGreeting.textContent = messageGreeting.textContent.replace("GREETING", messageFront);
         messageSender.textContent = messageSender.textContent.replace("SENDER", sender);
 
-        messageMain = messageMain.replace("&&", "<br>")
+        messageMain = messageMain.replaceAll("&&", "<br>")
         messageMain = messageActual.textContent.replace("MESSAGE_ACTUAL", messageMain)
         messageActual.innerHTML = messageMain
 
