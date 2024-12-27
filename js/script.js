@@ -276,6 +276,7 @@ function playAnimation(mode, chars) {
             const char = document.createElement('div');
             char.classList.add('animated-character');
             char.innerText = chars[Math.floor(Math.random() * chars.length)];
+            char.style.fontSize = getRandomInt(16, 40) + "px";
             document.querySelector('.animated-background').appendChild(char);
 
             // Look up and execute the animation function based on the mode
