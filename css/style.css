@@ -293,6 +293,14 @@ body {
     transform: translate(-50%, 50%); /* Move the blob's center to the lower right */
 }
 
+/* Special link */
+.playlist-link{
+    color:var(--letter-font);
+    font-weight: bold;
+    font-weight: no;
+    text-decoration: none;
+}
+
 /* Utility classes */
 .hidden {
     opacity: 0 !important;

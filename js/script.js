@@ -41,7 +41,8 @@ const fetchData = async () => {
             uri,
             date = ""
         } = data;
-        
+        uri = 'https://open.spotify.com/playlist/' + uri
+
         let adjustedColors = adjustColor(colorEnvelope)
         document.documentElement.style.setProperty('--envelope-base', colorEnvelope);
         document.documentElement.style.setProperty('--letter', colorLetter);
@@ -65,6 +66,12 @@ const fetchData = async () => {
         messageSender.textContent = messageSender.textContent.replace("SENDER", sender);
 
         messageMain = messageMain.replaceAll("&&", "<br>")
+        const regex = /&a(.*?)&\/a/;
+        const resultText = messageMain.match(regex)[1];
+        messageMain = messageMain.replace(resultText, "")
+        messageMain = messageMain.replace("&a", `<a href=${uri} target="_blank" class="playlist-link"> ${resultText}`)
+        messageMain = messageMain.replace("&/a", `</a>`)
+
         messageMain = messageActual.textContent.replace("MESSAGE_ACTUAL", messageMain)
         messageActual.innerHTML = messageMain
 
@@ -85,7 +92,7 @@ const fetchData = async () => {
             const spotifyOptions = {
                 width: '75%',
                 height: '100',
-                uri: 'https://open.spotify.com/playlist/' + uri ,
+                uri:  uri,
             };
 
             const setupSpotifyPlayer = (EmbedController) => {
