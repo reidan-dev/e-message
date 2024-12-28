@@ -297,7 +297,6 @@ body {
 .playlist-link{
     color:var(--letter-font);
     font-weight: bold;
-    font-weight: no;
     text-decoration: none;
 }
 
